@@ -1,0 +1,55 @@
+{% macro render_table(headers, rows) %}
+<table>
+  <thead>
+    <tr>
+      {% for header in headers %}
+      <th>{{ header }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      {% for cell in row %}
+      <td>{{ cell }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endmacro %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Мировой импорт товаров и услуг (1960-настоящее время)</title>
+    <link rel="stylesheet" href="/static/style.css"
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="#countries_in_region">Список стран в регионе</a></li>
+        <li><a href="#export_in_country">Экспорт в стране</a></li>
+        <li><a href="#top_exporting_countries_per_year">Лидеры по экспорту по годам</a></li>
+        <li><a href="#bottom_20_exporting_countries">Топ 20 стран с самым низким экспортом</a></li>
+        <li><a href="#top_20_exporting_countries">Топ 20 стран с самым высоким экспортом</a></li>
+      </ul>
+    </nav>
+    <h3 id="countries_in_region">Список стран в регионе {{countries_in_region_region}}</h3>
+    {{ render_table(countries_in_region_head, countries_in_region_body) }}
+    <a href="#top">Назад</a>
+    <h3 id="export_in_country">Экспорт в {{exports_for_country_country}}</h3>
+    {{ render_table(exports_for_country_head, exports_for_country_body) }}
+    <a href="#top">Назад</a>
+    <h3 id="top_exporting_countries_per_year">Лидеры по экспорту по годам</h3>
+    {{ render_table(top_exporting_countries_per_year_head, top_exporting_countries_per_year_body) }}
+    <a href="#top">Назад</a>
+    <h3 id="bottom_20_exporting_countries">Топ 20 стран с самым низким экспортом</h3>
+    {{ render_table(bottom_20_exporting_countries_head, bottom_20_exporting_countries_body) }}
+    <a href="#top">Назад</a>
+    <h3 id="top_20_exporting_countries">Топ 20 стран с самым высоким экспортом</h3>
+    {{ render_table(top_20_exporting_countries_head, top_20_exporting_countries_body) }}
+    <a href="#top">Назад</a>
+    
+  </body>
+</html>

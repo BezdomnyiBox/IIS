@@ -1,4 +1,5 @@
-from config import db 
+from config import db
+from app import app 
 
 class Region(db.Model):
     __tablename__ = 'region' # задавать необязательно
@@ -24,6 +25,9 @@ class SubRegion(db.Model):
     def __init__(self, name, region_id):
         self.name = name
         self.region_id = region_id
+        
+    def __repr__(self):
+        return f'\nid: {self.id}, Субрегион: {self.name}, region_id: {self.region_id}'    
 
 class Country(db.Model):
     __tablename__ = 'country' # задавать необязательно
@@ -36,11 +40,13 @@ class Country(db.Model):
     def __init__(self, name, sub_region_id):
         self.name = name
         self.sub_region_id = sub_region_id
+    def __repr__(self):
+        return f'\nid: {self.id}, Страна: {self.name}, sub_region_id: {self.sub_region_id}'   
 
 class Export(db.Model):
     __tablename__ = 'export' # задавать необязательно
     id = db.Column(db.Integer, primary_key=True) 
-    year = db.Column('Год', db.Date(), nullable=False)
+    year = db.Column('Год', db.String(255), nullable=False)
     value = db.Column('Значение', db.Float(), nullable=False)    
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'))
     country = db.relationship("Country", back_populates="exports")
@@ -48,7 +54,10 @@ class Export(db.Model):
     def __init__(self, year, value, country_id):
         self.year = year
         self.value = value
-        self.country_id = country_id  
+        self.country_id = country_id 
+    
+    def __repr__(self):
+        return f'\nid: {self.id}, Год: {self.year}, Значение: {self.value}, country_id: {self.country_id}'
             
 app.app_context().push()
 

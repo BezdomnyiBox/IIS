@@ -173,6 +173,87 @@ def get_export_by_year(year):
     query = Export.query.filter(Export.year == year).all()
     return query
 
+def get_max_export_by_country(country_id):
+    country = Country.query.filter(Country.id == country_id).one_or_none()
+    if country is None:
+        abort(404)
+    query = Export.query.filter(Export.country_id == country_id)\
+     .order_by(Export.value.desc())\
+     .first()
+    return query
+
+def get_min_export_by_country(country_id):
+    country = Country.query.filter(Country.id == country_id).one_or_none()
+    if country is None:
+        abort(404)
+    query = Export.query.filter(Export.country_id == country_id)\
+     .order_by(Export.value.asc())\
+     .first()
+    return query
+
+def get_avg_export_by_country(country_id):
+    country = Country.query.filter(Country.id == country_id).one_or_none()
+    if country is None:
+        abort(404)
+    query = db.session.query(
+        func.avg(Export.value).label('avg_value')
+    ).filter(Export.country_id == country_id).scalar()
+    return query
+
+def get_max_export_by_year(year):
+    query = Export.query.filter(Export.year == year)\
+     .order_by(Export.value.desc())\
+     .first()
+    return query
+
+def get_min_export_by_year(year):
+    query = Export.query.filter(Export.year == year)\
+     .order_by(Export.value.asc())\
+     .first()
+    return query
+
+def get_avg_export_by_year(year):
+    query = db.session.query(
+        func.avg(Export.value).label('avg_value')
+    ).filter(Export.year == year).scalar()
+    return query
+
+def get_max_export_by_region(region_id):
+    region = Region.query.filter(Region.id == region_id).one_or_none()
+    if region is None:
+        abort(404)
+    query = Export.query.join(Country, Export.country_id == Country.id)\
+     .join(SubRegion, Country.sub_region_id == SubRegion.id)\
+     .join(Region, SubRegion.region_id == Region.id)\
+     .filter(Region.id == region_id)\
+     .order_by(Export.value.desc())\
+     .first()
+    return query
+
+def get_min_export_by_region(region_id):
+    region = Region.query.filter(Region.id == region_id).one_or_none()
+    if region is None:
+        abort(404)
+    query = Export.query.join(Country, Export.country_id == Country.id)\
+     .join(SubRegion, Country.sub_region_id == SubRegion.id)\
+     .join(Region, SubRegion.region_id == Region.id)\
+     .filter(Region.id == region_id)\
+     .order_by(Export.value.asc())\
+     .first()
+    return query
+
+def get_avg_export_by_region(region_id):
+    region = Region.query.filter(Region.id == region_id).one_or_none()
+    if region is None:
+        abort(404)
+    query = db.session.query(
+        func.avg(Export.value).label('avg_value')
+    ).join(Country, Export.country_id == Country.id)\
+     .join(SubRegion, Country.sub_region_id == SubRegion.id)\
+     .join(Region, SubRegion.region_id == Region.id)\
+     .filter(Region.id == region_id).scalar()
+    return query
+
 
 
 

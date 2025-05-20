@@ -215,3 +215,75 @@ def delete_one_export(id):
     if delete_export(id):
         return jsonify({'result': True})
     abort(404)
+    
+@app.route('/structures/api/v1/regions/<int:region_id>/max_export', methods=['GET'])
+@auth.login_required
+def max_export_by_region(region_id):
+    max_export = get_max_export_by_region(region_id)
+    if max_export is None:
+        abort(404)
+    return jsonify({"max_export": export_cschema.dump(max_export)})
+    
+@app.route('/structures/api/v1/regions/<int:region_id>/min_export', methods=['GET'])
+@auth.login_required
+def min_export_by_region(region_id):
+    min_export = get_min_export_by_region(region_id)
+    if min_export is None:
+        abort(404)
+    return jsonify({"min_export": export_cschema.dump(min_export)})
+
+@app.route('/structures/api/v1/regions/<int:region_id>/avg_export', methods=['GET'])
+@auth.login_required
+def avg_export_by_region(region_id):
+    avg_export = get_avg_export_by_region(region_id)
+    if avg_export is None:
+        abort(404)  
+    return jsonify({"avg_export": avg_export})
+
+@app.route('/structures/api/v1/exports/year/<int:year>/max_export', methods=['GET'])
+@auth.login_required
+def max_export_by_year(year):
+    max_export = get_max_export_by_year(year)
+    if max_export is None:
+        abort(404)
+    return jsonify({"max_export": export_cschema.dump(max_export)})
+
+@app.route('/structures/api/v1/exports/year/<int:year>/min_export', methods=['GET'])
+@auth.login_required
+def min_export_by_year(year):
+    min_export = get_min_export_by_year(year)
+    if min_export is None:
+        abort(404)
+    return jsonify({"min_export": export_cschema.dump(min_export)})
+
+@app.route('/structures/api/v1/exports/year/<int:year>/avg_export', methods=['GET'])
+@auth.login_required
+def avg_export_by_year(year):
+    avg_export = get_avg_export_by_year(year)
+    if avg_export is None:
+        abort(404)
+    return jsonify({"avg_export": avg_export})
+
+@app.route('/structures/api/v1/countries/<int:country_id>/max_export', methods=['GET'])
+@auth.login_required
+def max_export_by_country(country_id):
+    max_export = get_max_export_by_country(country_id)
+    if max_export is None:
+        abort(404)
+    return jsonify({"max_export": export_cschema.dump(max_export)})
+    
+@app.route('/structures/api/v1/countries/<int:country_id>/min_export', methods=['GET'])
+@auth.login_required
+def min_export_by_country(country_id):
+    min_export = get_min_export_by_country(country_id)
+    if min_export is None:
+        abort(404)
+    return jsonify({"min_export": export_cschema.dump(min_export)})
+
+@app.route('/structures/api/v1/countries/<int:country_id>/avg_export', methods=['GET'])
+@auth.login_required
+def avg_export_by_country(country_id):
+    avg_export = get_avg_export_by_country(country_id)
+    if avg_export is None:
+        abort(404)
+    return jsonify({"avg_export": avg_export})

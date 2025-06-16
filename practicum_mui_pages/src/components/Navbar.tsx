@@ -11,6 +11,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Drawer from "@mui/material/Drawer";
 import MenuItem from "@mui/material/MenuItem";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { Link } from "react-router-dom";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -50,27 +51,34 @@ function NavBar({ activePage = "1" }: NavBarProps) {
           </Typography>
 
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Button 
-              variant={activePage === "1" ? "contained" : "text"} 
-              color="info" 
-              size="medium"
-            >
-              Главная
-            </Button>
-            <Button 
-              variant={activePage === "2" ? "contained" : "text"} 
-              color="info" 
-              size="medium"
-            >
-              Список зданий
-            </Button>
-            <Button 
-              variant={activePage === "3" ? "contained" : "text"} 
-              color="info" 
-              size="medium"
-            >
-              Контакты
-            </Button>
+            <Link to="/">
+              <Button
+                variant={activePage === "1" ? "contained" : "text"}
+                color="info"
+                size="medium"
+              >
+                Главная
+              </Button>
+            </Link>
+            <Link to="/list">
+              <Button
+                variant={activePage === "2" ? "contained" : "text"}
+                color="info"
+                size="medium"
+              >
+                Список зданий
+              </Button>
+            </Link>
+
+            <Link to="/diagrams">
+              <Button
+                variant={activePage === "3" ? "contained" : "text"}
+                color="info"
+                size="medium"
+              >
+                Диаграммы
+              </Button>
+            </Link>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
@@ -90,51 +98,58 @@ function NavBar({ activePage = "1" }: NavBarProps) {
                   <CloseRoundedIcon />
                 </IconButton>
               </Box>
-              <MenuItem
-                color="info"
-                sx={{
-                  bgcolor: activePage === "1" ? "info.light" : "transparent",
-                  color: activePage === "1" ? "info.contrastText" : "inherit",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    bgcolor: "info.light",
-                    color: "info.contrastText",
+              <Link to="/">
+                <MenuItem
+                  color="info"
+                  sx={{
+                    bgcolor: activePage === "1" ? "info.light" : "transparent",
+                    color: activePage === "1" ? "info.contrastText" : "inherit",
                     transition: "all 0.3s ease",
-                  },
-                }}
-              >
-                Главная
-              </MenuItem>
-              <MenuItem
-                color="info"
-                sx={{
-                  bgcolor: activePage === "2" ? "info.light" : "transparent",
-                  color: activePage === "2" ? "info.contrastText" : "inherit",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    bgcolor: "info.light",
-                    color: "info.contrastText",
+                    "&:hover": {
+                      bgcolor: "info.light",
+                      color: "info.contrastText",
+                      transition: "all 0.3s ease",
+                    },
+                  }}
+                >
+                  Главная
+                </MenuItem>
+              </Link>
+              <Link to="/list">
+                <MenuItem
+                  color="info"
+                  sx={{
+                    bgcolor: activePage === "2" ? "info.light" : "transparent",
+                    color: activePage === "2" ? "info.contrastText" : "inherit",
                     transition: "all 0.3s ease",
-                  },
-                }}
-              >
-                Список зданий
-              </MenuItem>
-              <MenuItem
-                color="info"
-                sx={{
-                  bgcolor: activePage === "3" ? "info.light" : "transparent",
-                  color: activePage === "3" ? "info.contrastText" : "inherit",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    bgcolor: "info.light",
-                    color: "info.contrastText",
+                    "&:hover": {
+                      bgcolor: "info.light",
+                      color: "info.contrastText",
+                      transition: "all 0.3s ease",
+                    },
+                  }}
+                >
+                  Список зданий
+                </MenuItem>
+              </Link>
+
+              <Link to="/diagrams">
+                <MenuItem
+                  color="info"
+                  sx={{
+                    bgcolor: activePage === "3" ? "info.light" : "transparent",
+                    color: activePage === "3" ? "info.contrastText" : "inherit",
                     transition: "all 0.3s ease",
-                  },
-                }}
-              >
-                Контакты
-              </MenuItem>
+                    "&:hover": {
+                      bgcolor: "info.light",
+                      color: "info.contrastText",
+                      transition: "all 0.3s ease",
+                    },
+                  }}
+                >
+                  Диаграммы
+                </MenuItem>
+              </Link>
             </Box>
           </Drawer>
         </StyledToolbar>

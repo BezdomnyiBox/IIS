@@ -1,0 +1,7 @@
+Flask
+flask-httpauth
+flask-restful
+flask-sqlalchemy
+flask-marshmallow
+marshmallow
+sqlalchemy

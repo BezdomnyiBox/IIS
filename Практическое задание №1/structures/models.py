@@ -29,28 +29,26 @@ def get_exports_for_country(country_name):
     return [query.statement.columns.keys(), query.all()]
 
 
-# 3. Получить страны лидеры по экспорту на каждый год
+# 3. Получить страны лидеры по экспорту на каждый год через GROUP BY
 def get_top_exporting_countries_per_year():
-    subquery = db.session.query(
-        Export.year,
-        Export.country_id,
-        db.func.rank()
-        .over(partition_by=Export.year, order_by=Export.value.desc())
-        .label("rank"),
-    ).subquery()
+    subquery = (
+        db.session.query(
+            Export.year.label("year"),
+            db.func.max(Export.value).label("max_value")
+        )
+        .group_by(Export.year)
+        .subquery()
+    )
 
     query = (
         db.session.query(
-            subquery.c.year.label("Год"),
+            Export.year.label("Год"),
             Country.name.label("Страна"),
-            Export.value.label("Значение"),
+            Export.value.label("Значение")
         )
-        .join(Country, subquery.c.country_id == Country.id)
-        .join(
-            Export, (Export.country_id == Country.id) & (Export.year == subquery.c.year)
-        )
-        .filter(subquery.c.rank == 1)
-        .order_by(subquery.c.year)
+        .join(Country, Export.country_id == Country.id)
+        .join(subquery, (Export.year == subquery.c.year) & (Export.value == subquery.c.max_value))
+        .order_by(Export.year)
     )
     return [query.statement.columns.keys(), query.all()]
 

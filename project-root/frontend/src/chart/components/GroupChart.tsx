@@ -1,10 +1,17 @@
 import { BarChart } from "@mui/x-charts/BarChart";
 import { LineChart } from "@mui/x-charts/LineChart";
 import Container from "@mui/material/Container";
-import { tGroup } from "../groupdata";
 import * as React from "react";
 import { axisClasses } from "@mui/x-charts/ChartsAxis";
 import SettingChart from "./SettingChart";
+
+type tGroup = {
+  id: number;
+  Группа: string | number;
+  "Минимальный экспорт": number;
+  "Максимальный экспорт": number;
+  "Средний экспорт": number;
+}[];
 
 type GroupProps = {
   data: tGroup;

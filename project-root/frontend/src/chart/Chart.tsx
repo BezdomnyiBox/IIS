@@ -1,24 +1,68 @@
 import Navbar from "../components/Navbar";
 import GroupGrid from "./components/GroupGrid";
 import GroupChart from "./components/GroupChart";
-import { countries, years, regions } from "./groupdata";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import * as React from "react";
+import React, { useState, useEffect } from "react";
+
 type tSelect = "Страна" | "Год" | "Регион";
 
+export type tGroupItem = {
+  id: number;
+  "Группа": string | number;
+  "Минимальный экспорт": number;
+  "Максимальный экспорт": number;
+  "Средний экспорт": number;
+};
+
+export type tGroup = tGroupItem[];
+
 function Chart() {
-  const [group, setGroup] = React.useState<tSelect>("Страна");
-  const [groupData, setGroupData] = React.useState(countries);
+  const [group, setGroup] = useState<tSelect>("Страна");
+  const [groupData, setGroupData] = useState<tGroup>([]);
+  
+  const [countriesData, setCountriesData] = useState<tGroup>([]);
+  const [yearsData, setYearsData] = useState<tGroup>([]);
+  const [regionsData, setRegionsData] = useState<tGroup>([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/structures/api/v1/exports/grouped_by_country', {
+      headers: {
+        'Authorization': 'Basic ' + btoa('student:dvfu')
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setCountriesData(data.exports);
+        setGroupData(data.exports);
+      });
+
+    fetch('http://localhost:5000/structures/api/v1/exports/grouped_by_year', {
+      headers: {
+        'Authorization': 'Basic ' + btoa('student:dvfu')
+      }
+    })
+      .then(res => res.json())
+      .then(data => setYearsData(data.exports));
+    
+    fetch('http://localhost:5000/structures/api/v1/exports/grouped_by_region', {
+      headers: {
+        'Authorization': 'Basic ' + btoa('student:dvfu')
+      }
+    })
+      .then(res => res.json())
+      .then(data => setRegionsData(data.exports));
+  }, []);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setGroup(event.target.value as tSelect);
-    if (event.target.value === "Страна") setGroupData(countries);
-    if (event.target.value === "Год") setGroupData(years);
-    if (event.target.value === "Регион") setGroupData(regions);
+    const value = event.target.value as tSelect;
+    setGroup(value);
+    if (value === "Страна") setGroupData(countriesData);
+    if (value === "Год") setGroupData(yearsData);
+    if (value === "Регион") setGroupData(regionsData);
   };
 
   return (
@@ -36,7 +80,7 @@ function Chart() {
           >
             <MenuItem value="Страна"> Стране </MenuItem>
             <MenuItem value="Год"> Году </MenuItem>
-            <MenuItem value="Тип"> Региону </MenuItem>
+            <MenuItem value="Регион"> Региону </MenuItem>
           </Select>
         </FormControl>
       </Box>

@@ -254,6 +254,69 @@ def get_avg_export_by_region(region_id):
      .filter(Region.id == region_id).scalar()
     return query
 
+def get_exports_grouped_by_country():
+    results = db.session.query(
+        Country.id,
+        Country.name,
+        func.min(Export.value).label('min_export'),
+        func.max(Export.value).label('max_export'),
+        func.avg(Export.value).label('avg_export')
+    ).join(Export, Country.id == Export.country_id)\
+     .group_by(Country.id, Country.name)\
+     .all()
+    
+    return [
+        {
+            "id": r[0],
+            "Группа": r[1],
+            "Минимальный экспорт": r[2],
+            "Максимальный экспорт": r[3],
+            "Средний экспорт": float(r[4]) if r[4] is not None else 0
+        } for r in results
+    ]
+
+def get_exports_grouped_by_year():
+    results = db.session.query(
+        Export.year,
+        func.min(Export.value).label('min_export'),
+        func.max(Export.value).label('max_export'),
+        func.avg(Export.value).label('avg_export')
+    ).group_by(Export.year)\
+     .all()
+
+    return [
+        {
+            "id": i + 1,
+            "Группа": r[0],
+            "Минимальный экспорт": r[1],
+            "Максимальный экспорт": r[2],
+            "Средний экспорт": float(r[3]) if r[3] is not None else 0
+        } for i, r in enumerate(results)
+    ]
+
+def get_exports_grouped_by_region():
+    results = db.session.query(
+        Region.id,
+        Region.name,
+        func.min(Export.value).label('min_export'),
+        func.max(Export.value).label('max_export'),
+        func.avg(Export.value).label('avg_export')
+    ).join(SubRegion, Region.id == SubRegion.region_id)\
+     .join(Country, SubRegion.id == Country.sub_region_id)\
+     .join(Export, Country.id == Export.country_id)\
+     .group_by(Region.id, Region.name)\
+     .all()
+
+    return [
+        {
+            "id": r[0],
+            "Группа": r[1],
+            "Минимальный экспорт": r[2],
+            "Максимальный экспорт": r[3],
+            "Средний экспорт": float(r[4]) if r[4] is not None else 0
+        } for r in results
+    ]
+
 
 
 

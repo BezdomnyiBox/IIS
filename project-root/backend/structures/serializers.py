@@ -32,6 +32,7 @@ class ExportSchema(ma.SQLAlchemyAutoSchema):
     country_id = ma.auto_field()
     
     
+    
 
 region_cschema = RegionSchema()
 regions_cschema = RegionSchema(many=True)

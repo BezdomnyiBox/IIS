@@ -12,7 +12,6 @@ def not_found(error):
 def bad_request(error):
     return make_response(jsonify({'error': 'Bad Request - Missing required fields'}), 400)
 
-# Здесь будут flask_restful ресурсы
 
 class RegionListResource(Resource):
     method_decorators = [auth.login_required]
@@ -265,3 +264,21 @@ class AvgExportByCountryResource(Resource):
         if avg_export is None:
             abort(404)
         return {"avg_export": avg_export}, 200
+
+class GroupedByCountryResource(Resource):
+    method_decorators = [auth.login_required]
+    def get(self):
+        grouped_data = get_exports_grouped_by_country()
+        return {"exports": grouped_data}, 200
+
+class GroupedByYearResource(Resource):
+    method_decorators = [auth.login_required]
+    def get(self):
+        grouped_data = get_exports_grouped_by_year()
+        return {"exports": grouped_data}, 200
+
+class GroupedByRegionResource(Resource):
+    method_decorators = [auth.login_required]
+    def get(self):
+        grouped_data = get_exports_grouped_by_region()
+        return {"exports": grouped_data}, 200

@@ -1,7 +1,15 @@
-import { tGroup } from "../groupdata";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import { ruRU } from "@mui/x-data-grid/locales";
 import Container from "@mui/material/Container";
+
+
+type tGroup = {
+  id: number;
+  Группа: string | number;
+  "Минимальный экспорт": number;
+  "Максимальный экспорт": number;
+  "Средний экспорт": number;
+}[];
 
 type GroupProps = {
   data: tGroup;

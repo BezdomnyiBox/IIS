@@ -66,13 +66,6 @@ README*
 # Logs
 *.log
 
-# Database files (if you want to exclude them)
-# instance/
-# *.db
-
-# Flask instance folder
-instance/
-
 # Environment variables
 .env
 .env.local

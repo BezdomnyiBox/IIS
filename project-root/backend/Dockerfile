@@ -1,8 +1,10 @@
-FROM python:3.12-slim
+FROM python:3.12.7-slim
 
-# Update system packages to fix vulnerabilities
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+# Install only essential packages and clean cache in one layer
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

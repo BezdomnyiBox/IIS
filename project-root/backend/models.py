@@ -1,5 +1,5 @@
 from config import db
-from app import app 
+from extensions import app 
 
 class Region(db.Model):
     __tablename__ = 'region' # задавать необязательно
